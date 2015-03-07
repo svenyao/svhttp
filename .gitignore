@@ -1,0 +1,29 @@
+
+# Ignore files build by Visual Studio
+[Dd]ebug/
+[Rr]elease/
+ipch/
+[Bb]in/
+*.ncb
+*.opt
+*.plg
+
+*.obj
+*.pch
+*.idb
+*.ilk
+*.pdb
+*.exp
+
+*.ipch
+*.opensdf
+*.sdf
+*.user
+*.suo
+
+#ignore vim .swp file
+*.swp
+
+#ignore tesseract-ocr libs
+external/tesseract/lib/
+
