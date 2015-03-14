@@ -3,11 +3,6 @@
 svhttp是一个基于libcurl实现的HTTP库.
 
 -
-##### 简介
-
-它支持HTTP(1.0/1.1)、HTTPS，断点续传，多线程并发下载，异步，HTTP/SOCKS4/SOCKS5代理支持等特性，开发者可以轻松的基于这个库开发其他相关应用。
-
--
 
 ##### 简易上手
 
@@ -76,7 +71,7 @@ int main(int* argc, char** argv)
 
 -
 
-### 克隆代码 ###
+##### 克隆代码
 
 使用 git 获取 svtickets 项目源代码:
 
@@ -95,7 +90,7 @@ int main(int* argc, char** argv)
 
 -
 
-### svhttp使用 ###
+##### svhttp使用
 
 	[VS2012 解决方案配置]
 
