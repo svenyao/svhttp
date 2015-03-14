@@ -1,10 +1,10 @@
 ======
 
-svhttpÊÇÒ»¸ö»ùÓÚlibcurlÊµÏÖµÄHTTP¿â.
+svhttpæ˜¯ä¸€ä¸ªåŸºäºlibcurlå®ç°çš„HTTPåº“.
 
 -
 
-##### ¼òÒ×ÉÏÊÖ
+##### ç®€æ˜“ä¸Šæ‰‹
 
 ``` c++
 #include <iostream>
@@ -22,30 +22,7 @@ int main(int* argc, char** argv)
 ```
 -
 
-##### postÊı¾İÌá½»
-
-``` c++
-#include <iostream>
-#include "svhttp.h"
-
-int main(int* argc, char** argv)
-{
-	svhttp::http_client _client;
-	
-	std::string post_str = "post string.";
-	_client.set_post_fields(post_str);
-	
-	_client.open("http://1111.ip138.com/ic.asp");
-	
-	std::cout << _client.read_some();
-	
-	return 0;
-}
-```
-
--	
-
-##### Ê¹ÓÃrequest_header¶¨ÖÆHTTPÇëÇó
+##### ä½¿ç”¨request_headerå®šåˆ¶HTTPè¯·æ±‚
 
 ``` c++
 #include <iostream>
@@ -70,7 +47,7 @@ int main(int* argc, char** argv)
 
 -
 
-##### ÉèÖÃ´úÀí
+##### postæ•°æ®æäº¤
 
 ``` c++
 #include <iostream>
@@ -79,7 +56,30 @@ int main(int* argc, char** argv)
 int main(int* argc, char** argv)
 {
 	svhttp::http_client _client;
-	// ÉèÖÃ´úÀí
+	
+	std::string post_str = "post string.";
+	_client.set_post_fields(post_str);
+	
+	_client.open("http://1111.ip138.com/ic.asp");
+	
+	std::cout << _client.read_some();
+	
+	return 0;
+}
+```
+
+-
+
+##### è®¾ç½®ä»£ç†
+
+``` c++
+#include <iostream>
+#include "svhttp.h"
+
+int main(int* argc, char** argv)
+{
+	svhttp::http_client _client;
+	// è®¾ç½®ä»£ç†
 	_client.set_proxy(std::string("127.0.0.1:808"));
 	
 	_client.open("http://1111.ip138.com/ic.asp");
@@ -90,52 +90,52 @@ int main(int* argc, char** argv)
 }
 ```
 
-¸ü¶à´úÀíÉèÖÃÏîÇë²ÎÕÕsvhttpÔ´Âë¡£
+æ›´å¤šä»£ç†è®¾ç½®é¡¹è¯·å‚ç…§svhttpæºç ã€‚
 
 -
 
-##### ¿ËÂ¡´úÂë
+##### å…‹éš†ä»£ç 
 
-Ê¹ÓÃ git »ñÈ¡ svtickets ÏîÄ¿Ô´´úÂë:
+ä½¿ç”¨ git è·å– svtickets é¡¹ç›®æºä»£ç :
 
     $ git clone git://github.com/byxing/svtickets
     $ cd svtickets
 
-¿ËÂ¡×ÓÄ£¿éÏîÄ¿:
+å…‹éš†å­æ¨¡å—é¡¹ç›®:
 
     $ git submodule init
     $ git submodule update
 
-¸üĞÂ svtickets ÏîÄ¿´úÂë:
+æ›´æ–° svtickets é¡¹ç›®ä»£ç :
 
     $ cd svtickets
     $ git pull -f
 
 -
 
-##### svhttpÊ¹ÓÃ
+##### svhttpä½¿ç”¨è§£å†³æ–¹æ¡ˆé…ç½®ç¤ºä¾‹è§£æ[ä»¥vs2012ä¸ºä¾‹]
 
-	[VS2012 ½â¾ö·½°¸ÅäÖÃ]
+	[VS2012 è§£å†³æ–¹æ¡ˆé…ç½®]
 
-	svhttp¿âÅäÖÃ
-	C/C++ -> ³£¹æ -> ¸½¼Ó°üº¬Ä¿Â¼
+	<svhttpåº“é…ç½®>ï¼š
+	C/C++ -> å¸¸è§„ -> é™„åŠ åŒ…å«ç›®å½•
 	../../external/libcurl/include;
 	../../svhttp;
-	Á´½ÓÆ÷ -> ³£¹æ -> ¸½¼Ó¿âÄ¿Â¼
+	é“¾æ¥å™¨ -> å¸¸è§„ -> é™„åŠ åº“ç›®å½•
 	../../external/libcurl/build;
-	Á´½ÓÆ÷ -> ÊäÈë -> ¸½¼ÓÒÀÀµÏî
+	é“¾æ¥å™¨ -> è¾“å…¥ -> é™„åŠ ä¾èµ–é¡¹
 	libcurl_imp.lib;
 
-	svhttpÖ§³Öiconv±àÂë¿âÅäÖÃ£º
-	C/C++ -> ³£¹æ -> ¸½¼Ó°üº¬Ä¿Â¼
+	<svhttpæ”¯æŒiconvç¼–ç åº“é…ç½®>ï¼š
+	C/C++ -> å¸¸è§„ -> é™„åŠ åŒ…å«ç›®å½•
 	../../external/libiconv/include;
-	Á´½ÓÆ÷ -> ³£¹æ -> ¸½¼Ó¿âÄ¿Â¼
+	é“¾æ¥å™¨ -> å¸¸è§„ -> é™„åŠ åº“ç›®å½•
 	../../external/libiconv/build/vc11;
-	Á´½ÓÆ÷ -> ÊäÈë -> ¸½¼ÓÒÀÀµÏî
+	é“¾æ¥å™¨ -> è¾“å…¥ -> é™„åŠ ä¾èµ–é¡¹
 	libiconvd.lib;
 
-ÈçsvhttpĞèÒªÊ¹ÓÃiconv±àÂë¿âÖ§³Ö£¬¸üĞÂgithub×ÓÄ£¿éÏîÄ¿²¢ÇÒ°´ÉÏÊöÅäÖÃiconv±àÂë¿âÖ§³Ö£¬Èç²»ĞèÒªÖ§³ÖÔò²»×ö´Ë²Ù×÷¡£
+	å¦‚svhttpéœ€è¦ä½¿ç”¨iconvç¼–ç åº“æ”¯æŒï¼Œæ›´æ–°githubå­æ¨¡å—é¡¹ç›®å¹¶ä¸”æŒ‰ä¸Šè¿°é…ç½®iconvç¼–ç åº“æ”¯æŒï¼Œå¦‚ä¸éœ€è¦æ”¯æŒåˆ™ä¸åšæ­¤æ“ä½œã€‚
 
 -
 
-¸ü¶àsvhttpÊ¹ÓÃ·½·¨£¬Çë²ÎÕÕsvhttpÔ´Âë¡£
+æ›´å¤šsvhttpä½¿ç”¨æ–¹æ³•ï¼Œè¯·å‚ç…§svhttpæºç ã€‚
