@@ -4,7 +4,7 @@
 #include <string>
 
 #if ENABLE_LIBICONV
-#include "libiconv/include/iconv.h"
+#include "iconv.h"
 #endif
 
 namespace svhttp

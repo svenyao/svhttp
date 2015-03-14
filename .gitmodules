@@ -1,0 +1,3 @@
+[submodule "external/libiconv"]
+	path = external/libiconv
+	url = git@github.com:byxing/libiconv.git

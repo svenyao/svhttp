@@ -24,6 +24,4 @@ ipch/
 #ignore vim .swp file
 *.swp
 
-#ignore tesseract-ocr libs
-external/tesseract/lib/
 
