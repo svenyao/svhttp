@@ -1,15 +1,37 @@
 #include "bencode.h"
 #include <stdlib.h>
 
-// #if defined(WIN32) && (defined(DEBUG) || defined(_DEBUG))
-// #pragma comment(lib, "libiconv/build/vc11/libiconvd.lib")
-// #else
-// #pragma comment(lib, "libiconv/build/vc11/libiconv.lib")
-// #endif
-//#define _CRT_SECURE_NO_WARNINGS
-
 namespace svhttp
 {
+#if ENABLE_LIBICONV
+	/**
+	 *  convert(...) string封装
+	 *  [in|out]put string : src_str
+	 *  s[from|to]: 编码名称
+	 */
+	int convert_str(const std::string& sfrom, const std::string& sto, std::string& src_str)
+	{
+		int ilen = src_str.length();
+		int ioutlen = ilen * 3;
+		char *outbuf = (char *)malloc(ioutlen);
+		memset(outbuf, 0, ioutlen);
+
+		int nret = convert(sfrom.c_str(), sto.c_str(), outbuf, ioutlen, src_str.c_str(), ilen);
+		if (nret < 0)
+		{
+			free(outbuf);
+			outbuf = NULL;
+			return nret;
+		}
+
+		outbuf[nret] = '\0';
+		src_str = outbuf;
+		free(outbuf);
+		outbuf = NULL;
+
+		return nret;
+	}
+
 	/**
 	 *	对字符串进行语言编码转换
 	 *	param from  原始编码，比如"GB2312",的按照iconv支持的写
@@ -74,35 +96,8 @@ namespace svhttp
 		return status;
 	}
 
-	/**
-	 *  convert(...) string封装
-	 *  [in|out]put string : src_str
-	 *  s[from|to]: 编码名称
-	 */
-	int convert_str(const std::string& sfrom, const std::string& sto, std::string& src_str)
-	{
-		int ilen = src_str.length();
-		int ioutlen = ilen * 3;
-		char *outbuf = (char *)malloc(ioutlen);
-		memset(outbuf, 0, ioutlen);
+#endif
 
-		int nret = convert(sfrom.c_str(), sto.c_str(), outbuf, ioutlen, src_str.c_str(), ilen);
-		if (nret < 0)
-		{
-			free(outbuf);
-			outbuf = NULL;
-			return nret;
-		}
-
-		outbuf[nret] = '\0';
-		src_str = outbuf;
-		free(outbuf);
-		outbuf = NULL;
-
-		return nret;
-	}
-
-	
 	/**
 	 * Encodiert einen std::string base64
 	 */

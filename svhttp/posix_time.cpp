@@ -90,11 +90,19 @@ std::string date_time::to_string(bool msec /*= false*/)
 	char time_str[64] = {0};
 	if (msec)
 	{
+#if _MSC_VER >= 1400
+		sprintf_s(time_str, "%04d-%02d-%02d %02d:%02d:%02d.%03d", nyear, nmonth, nday, nhour, nminuter, nseconds, nmilliseconds);
+#else
 		sprintf(time_str, "%04d-%02d-%02d %02d:%02d:%02d.%03d", nyear, nmonth, nday, nhour, nminuter, nseconds, nmilliseconds);
+#endif
 	}
 	else
 	{
+#if _MSC_VER >= 1400
+		sprintf_s(time_str, "%04d-%02d-%02d %02d:%02d:%02d", nyear, nmonth, nday, nhour, nminuter, nseconds);
+#else
 		sprintf(time_str, "%04d-%02d-%02d %02d:%02d:%02d", nyear, nmonth, nday, nhour, nminuter, nseconds);
+#endif
 	}
 
 	return std::string(time_str);
@@ -103,7 +111,11 @@ std::string date_time::to_string(bool msec /*= false*/)
 std::string date_time::to_date_string()
 {
 	char date_str[64] = {0};
+#if _MSC_VER >= 1400
+	sprintf_s(date_str, "%04d-%02d-%02d", nyear, nmonth, nday);
+#else
 	sprintf(date_str, "%04d-%02d-%02d", nyear, nmonth, nday);
+#endif
 	
 	return std::string(date_str);
 }
@@ -113,11 +125,19 @@ std::string date_time::to_time_string(bool msec /*= false*/)
 	char time_str[64] = {0};
 	if (msec)
 	{
+#if _MSC_VER >= 1400
+		sprintf_s(time_str, "%02d:%02d:%02d.%03d", nhour, nminuter, nseconds, nmilliseconds);
+#else
 		sprintf(time_str, "%02d:%02d:%02d.%03d", nhour, nminuter, nseconds, nmilliseconds);
+#endif
 	}
 	else
 	{
+#if _MSC_VER >= 1400
+		sprintf_s(time_str, "%02d:%02d:%02d", nhour, nminuter, nseconds);
+#else
 		sprintf(time_str, "%02d:%02d:%02d", nhour, nminuter, nseconds);
+#endif
 	}
 	return std::string(time_str);
 }

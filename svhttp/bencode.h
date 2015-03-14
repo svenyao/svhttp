@@ -2,10 +2,14 @@
 #define _svhttp_bencode_hpp_
 
 #include <string>
+
+#if ENABLE_LIBICONV
 #include "libiconv/include/iconv.h"
+#endif
 
 namespace svhttp
 {
+#if ENABLE_LIBICONV
 	/**
 	 *  convert(...) string封装
 	 *  [in|out]put string : src_str
@@ -14,7 +18,7 @@ namespace svhttp
 	int convert_str(const std::string& sfrom, const std::string& sto, std::string& src_str);
 
 	int convert(const char *from, const char *to, char* save, int savelen, const char *src, int srclen);
-
+#endif
 	/**
 	 *	base64 encode&decode
 	 */
