@@ -76,44 +76,59 @@ int main(int* argc, char** argv)
 
 -
 
+### 克隆代码 ###
 
-##### 克隆代码
+使用 git 获取 svtickets 项目源代码:
 
-使用 git 获取 svhttp 项目源代码:
+    $ git clone git://github.com/byxing/svtickets
+    $ cd svtickets
 
-$ git clone git://github.com/byxing/svhttp
-$ cd svhttp
 克隆子模块项目:
 
-$ git submodule init
-$ git submodule update
-更新 svhttp 项目代码:
+    $ git submodule init
+    $ git submodule update
 
-$ cd svhttp
-$ git pull -f
+更新 svtickets 项目代码:
+
+    $ cd svtickets
+    $ git pull -f
 
 -
 
-##### svhttp使用
+### svhttp使用 ###
 
 [VS2012 解决方案配置]
+
 svhttp库配置
+
 C/C++ -> 常规 -> 附加包含目录
-../../external/libcurl/include;
-../../svhttp;
+
+	../../external/libcurl/include;
+	../../svhttp;
+	
 链接器 -> 常规 -> 附加库目录
-../../external/libcurl/build;
+
+	../../external/libcurl/build;
+	
 链接器 -> 输入 -> 附加依赖项
-libcurl_imp.lib;
+
+	libcurl_imp.lib;
 
 
 svhttp支持iconv编码库配置：
+
 C/C++ -> 常规 -> 附加包含目录
-../../external/libiconv/include;
+
+	../../external/libiconv/include;
+	
 链接器 -> 常规 -> 附加库目录
-../../external/libiconv/build/vc11;
+
+	../../external/libiconv/build/vc11;
+	
 链接器 -> 输入 -> 附加依赖项
-libiconvd.lib;
+
+	libiconvd.lib;
+	
 
 如svhttp需要使用iconv编码库支持，更新github子模块项目并且按上述配置iconv编码库支持，如不需要支持则不做此操作。
 
