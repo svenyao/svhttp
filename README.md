@@ -22,6 +22,29 @@ int main(int* argc, char** argv)
 ```
 -
 
+##### post数据提交
+
+``` c++
+#include <iostream>
+#include "svhttp.h"
+
+int main(int* argc, char** argv)
+{
+	svhttp::http_client _client;
+	
+	std::string post_str = "post string.";
+	_client.set_post_fields(post_str);
+	
+	_client.open("http://1111.ip138.com/ic.asp");
+	
+	std::cout << _client.read_some();
+	
+	return 0;
+}
+```
+
+-	
+
 ##### 使用request_header定制HTTP请求
 
 ``` c++
@@ -115,3 +138,4 @@ int main(int* argc, char** argv)
 
 -
 
+更多svhttp使用方法，请参照svhttp源码。
