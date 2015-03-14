@@ -97,38 +97,24 @@ int main(int* argc, char** argv)
 
 ### svhttp使用 ###
 
-[VS2012 解决方案配置]
+	[VS2012 解决方案配置]
 
-svhttp库配置
-
-C/C++ -> 常规 -> 附加包含目录
-
+	svhttp库配置
+	C/C++ -> 常规 -> 附加包含目录
 	../../external/libcurl/include;
 	../../svhttp;
-	
-链接器 -> 常规 -> 附加库目录
-
+	链接器 -> 常规 -> 附加库目录
 	../../external/libcurl/build;
-	
-链接器 -> 输入 -> 附加依赖项
-
+	链接器 -> 输入 -> 附加依赖项
 	libcurl_imp.lib;
 
-
-svhttp支持iconv编码库配置：
-
-C/C++ -> 常规 -> 附加包含目录
-
+	svhttp支持iconv编码库配置：
+	C/C++ -> 常规 -> 附加包含目录
 	../../external/libiconv/include;
-	
-链接器 -> 常规 -> 附加库目录
-
+	链接器 -> 常规 -> 附加库目录
 	../../external/libiconv/build/vc11;
-	
-链接器 -> 输入 -> 附加依赖项
-
+	链接器 -> 输入 -> 附加依赖项
 	libiconvd.lib;
-	
 
 如svhttp需要使用iconv编码库支持，更新github子模块项目并且按上述配置iconv编码库支持，如不需要支持则不做此操作。
 
