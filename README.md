@@ -1,6 +1,6 @@
 ======
 
-svhttp是一个基于libcurl实现的HTTP库.
+svhttp是一个基于libcurl实现的HTTP (c++)库.
 
 -
 
@@ -96,24 +96,24 @@ int main(int* argc, char** argv)
 
 ##### 克隆代码
 
-使用 git 获取 svtickets 项目源代码:
+使用 git 获取 svhttp 项目源代码:
 
-    $ git clone git://github.com/byxing/svtickets
-    $ cd svtickets
+    $ git clone git://github.com/byxing/svhttp
+    $ cd svhttp
 
 克隆子模块项目:
 
     $ git submodule init
     $ git submodule update
 
-更新 svtickets 项目代码:
+更新 svhttp 项目代码:
 
-    $ cd svtickets
+    $ cd svhttp
     $ git pull -f
 
 -
 
-##### svhttp使用解决方案配置示例解析[以vs2012为例]
+##### svhttp使用解决方案配置示例解析[以vs2012为例,其中目录路径需按实际解决方案修改]
 
 	[VS2012 解决方案配置]
 
@@ -134,7 +134,13 @@ int main(int* argc, char** argv)
 	链接器 -> 输入 -> 附加依赖项
 	libiconvd.lib;
 
-	如svhttp需要使用iconv编码库支持，更新github子模块项目并且按上述配置iconv编码库支持，如不需要支持则不做此操作。
+	如svhttp需要使用iconv编码库支持，更新github子模块项目并且按上述配置iconv编码库支持，
+	如不需要支持则不做此操作。
+
+	若项目需要开启iconv编码库支持，还需在项目引入svhttp库前加上启用宏，代码如下：
+	
+	#define ENABLE_LIBICONV	1
+	#include "svhttp.h"
 
 -
 
