@@ -3,13 +3,13 @@
 
 #include <string>
 
-#if ENABLE_LIBICONV
+#ifdef ENABLE_LIBICONV
 #include "iconv.h"
 #endif
 
 namespace svhttp
 {
-#if ENABLE_LIBICONV
+#ifdef ENABLE_LIBICONV
 	/**
 	 *  convert(...) string封装
 	 *  [in|out]put string : src_str

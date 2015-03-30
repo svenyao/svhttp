@@ -3,7 +3,7 @@
 
 namespace svhttp
 {
-#if ENABLE_LIBICONV
+#ifdef ENABLE_LIBICONV
 	/**
 	 *  convert(...) string封装
 	 *  [in|out]put string : src_str

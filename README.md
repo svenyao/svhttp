@@ -139,7 +139,7 @@ int main(int* argc, char** argv)
 
 	若项目需要开启iconv编码库支持，还需在项目引入svhttp库前加上启用宏，代码如下：
 	
-	#define ENABLE_LIBICONV	1
+	#define ENABLE_LIBICONV
 	#include "svhttp.h"
 
 -

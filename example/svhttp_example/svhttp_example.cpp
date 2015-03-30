@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include <iostream>
 
-#define ENABLE_LIBICONV	1
-
+//#define ENABLE_LIBICONV
 #include "ip138.hpp"
 
 int _tmain(int argc, _TCHAR* argv[])
