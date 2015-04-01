@@ -113,7 +113,7 @@ int main(int* argc, char** argv)
 
 -
 
-##### svhttp使用解决方案配置示例解析[以vs2012为例,其中目录路径需按实际解决方案修改]
+##### svhttp使用解决方案配置示例解析[以vs2012为例,其中目录路径需按实际解决方案修改,其他平台使用请参照之]
 
 	[VS2012 解决方案配置]
 
@@ -142,6 +142,8 @@ int main(int* argc, char** argv)
 	#define ENABLE_LIBICONV
 	#include "svhttp.h"
 
+	或者在项目属性的预处理宏中添加 ENABLE_LIBICONV;
+	
 -
 
 更多svhttp使用方法，请参照svhttp源码。
