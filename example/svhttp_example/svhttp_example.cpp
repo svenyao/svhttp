@@ -9,6 +9,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	SVLOGGER_INIT_PATH(".");
 	SVLOGGER_WARN << ip138().get_reponse_str();
 
 	return 0;

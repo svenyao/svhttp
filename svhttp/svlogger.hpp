@@ -133,6 +133,9 @@ namespace svlogger
 		};
 	}
 
+	// 定义logger 信息等级(字符串类型)
+	static const std::string LOG_LEVEL_STR[] = { "DEBUG", "#INFO", "WARNG", "ERROR","FILE" };
+
 	class auto_logger_file
 	{
 		template<class Writer>
@@ -152,13 +155,14 @@ namespace svlogger
 			{
 				std::string filename_ = filename;
 
-				std::string str;
+				std::string str = "svlogger." + LOG_LEVEL_STR[aux::lock_single<aux::logger_print_level>().get_print_level()];
+				str += ".";
 				svtime::date_time date;
 				std::string str_t = date.to_string(true);
 				date.string_replace(str_t, "-", "");
 				date.string_replace(str_t, " ", ".");
 				date.string_replace(str_t, ":", "");
-				str += str_t + ".svlogger.log";
+				str += str_t + ".log";
 				filename_ += "/" + str;
 
 				file_.open(filename_.c_str(), flag);
@@ -189,9 +193,6 @@ namespace svlogger
 		std::fstream file_;
 		std::string log_path_;
 	};
-
-	// 定义logger 信息等级(字符串类型)
-	static const std::string LOG_LEVEL_STR[] = { "DEBUG", "#INFO", "WARNG", "ERROR","FILE" };
 
 	// 控制台日志输出
 	SVLOGGER_DECL void output_console(unsigned int level, const std::string& prefix, const std::string& message)

@@ -89,7 +89,10 @@ public:
 	SVTIMER_DECL static unsigned int get_day_of_month(const unsigned int& iyear, const unsigned int& imonth);
 	// days since January 1 - [0,365]
 	SVTIMER_DECL static unsigned int get_day_of_year(const unsigned int& iyear, const unsigned int& imonth, const unsigned int& iday);
-
+	
+	// 字符替换函数
+	SVTIMER_DECL static std::string& string_replace(std::string& str, const std::string& old_value, const std::string& new_value);
+	
 	/**
 	 *	operator Override
 	 */
@@ -182,8 +185,6 @@ public:
  		return compare_date(*this, b) != 0;
  	}
 
-	// 字符替换函数
-	SVTIMER_DECL std::string& string_replace(std::string& str, const std::string& old_value, const std::string& new_value);
 private:
 	// 要设置的日期和时间与GMT时间1970年1月1日午夜之间的秒数。 // utc： 是否转换为utc时间
 	SVTIMER_DECL void set_time(time_t sec, bool utc = false);
