@@ -147,3 +147,5 @@ int main(int* argc, char** argv)
 -
 
 更多svhttp使用方法，请参照svhttp源码。
+
+fixed: 此库已实现为 HEADER_ONLY 模式。
