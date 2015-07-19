@@ -9,7 +9,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SVLOGGER_ERR << ip138().get_reponse_str();
+	SVLOGGER_WARN << ip138().get_reponse_str();
 
 	return 0;
 }

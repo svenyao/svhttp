@@ -1,39 +1,26 @@
-#include "posix_time.h"
-
-#include <time.h>
-
-#if _WIN32
-#include <windows.h>
-#endif
-
 /**	Copyright (c) 2015-20XX jianyaoy. all rights reserved.
  *	datetime deal class. 
  *	Author: jianyaoy@gmail.com
  *	$Date:  2015-02-10 23:00:00 +0800 $
  */
+#ifndef svtime_time_posix_ipp__
+#define svtime_time_posix_ipp__
 
-namespace svhttp
-{
-/**
- *	全局函数
- */
-// 字符替换
-std::string& string_replace(std::string& str,const std::string& old_value, const std::string& new_value)
-{
-	for(std::string::size_type pos(0); pos != std::string::npos; pos += new_value.length() )
-	{
-		if( (pos = str.find(old_value,pos)) != std::string::npos )
-			str.replace(pos, old_value.length(), new_value);
-		else
-			break;
-	}
-	return str;
-}
+#include "posix_time.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#ifdef WIN32
+#	include <windows.h>
+#else
+#	include <sys/time.h>
+#endif
 
+namespace svtime
+{
 /**
  *	date_time 类 实现
  */
-
 date_time::date_time()
 {
 	struct tm tmp;
@@ -54,12 +41,14 @@ date_time::date_time()
 	nminuter = tmp.tm_min;
 	nseconds = tmp.tm_sec;
 
-#if _WIN32
+#ifdef _WIN32
 	SYSTEMTIME wtm;
 	GetLocalTime(&wtm);
 	nmilliseconds = wtm.wMilliseconds;
 #else
-	nmilliseconds = 0;
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	nmilliseconds = tv.tv_usec;
 #endif
 
 	nisdst = tmp.tm_isdst;
@@ -149,6 +138,7 @@ std::string date_time::to_utc_string(bool msec /*= false*/)
 	time_t lsec = get_time();
 	date_time _date(lsec);
 	_date.set_time(lsec, true);
+	_date.set_milli_seconds(nmilliseconds);
 
 	return _date.to_string(msec);
 }
@@ -158,7 +148,8 @@ std::string date_time::to_utc_date_string()
 	time_t lsec = get_time();
 	date_time _date(lsec);
 	_date.set_time(lsec, true);
-	
+	_date.set_milli_seconds(nmilliseconds);
+
 	return _date.to_date_string();
 }
 // utc时间 [hh:mi:ss.ms] msec: 毫秒级 (true: 返回时间字符精确到毫秒)
@@ -167,7 +158,8 @@ std::string date_time::to_utc_time_string(bool msec/* = false*/)
 	time_t lsec = get_time();
 	date_time _date(lsec);
 	_date.set_time(lsec, true);
-	
+	_date.set_milli_seconds(nmilliseconds);
+
 	return _date.to_time_string(msec);
 }
 
@@ -706,5 +698,19 @@ void date_time::parse_date_string(const std::string& sz_date_time, bool reformat
 	nyearday = get_day_of_year(nyear, nmonth, nday);
 }
 
+// 字符替换
+std::string& date_time::string_replace(std::string& str,const std::string& old_value, const std::string& new_value)
+{
+	for(std::string::size_type pos(0); pos != std::string::npos; pos += new_value.length() )
+	{
+		if( (pos = str.find(old_value,pos)) != std::string::npos )
+			str.replace(pos, old_value.length(), new_value);
+		else
+			break;
+	}
+	return str;
+}
 
 } // @end namespace svhttp
+
+#endif

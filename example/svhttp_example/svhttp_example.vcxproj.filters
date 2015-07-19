@@ -33,24 +33,6 @@
     <ClInclude Include="..\ip138.hpp">
       <Filter>example</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\svhttp\bencode.h">
-      <Filter>svhttp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\svhttp\http_client.h">
-      <Filter>svhttp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\svhttp\posix_time.h">
-      <Filter>svhttp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\svhttp\settings.hpp">
-      <Filter>svhttp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\svhttp\svhttp.h">
-      <Filter>svhttp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\svhttp\svlogger.h">
-      <Filter>svhttp</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -58,18 +40,6 @@
     </ClCompile>
     <ClCompile Include="svhttp_example.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\svhttp\bencode.cpp">
-      <Filter>svhttp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\svhttp\http_client.cpp">
-      <Filter>svhttp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\svhttp\posix_time.cpp">
-      <Filter>svhttp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\svhttp\svlogger.cpp">
-      <Filter>svhttp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

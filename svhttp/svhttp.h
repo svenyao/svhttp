@@ -1,10 +1,10 @@
-#ifndef _svhttp_hpp_
-#define _svhttp_hpp_
+#ifndef svhttp_svhttp_h__
+#define svhttp_svhttp_h__
 
-#include "http_client.h"
-#include "svlogger.h"
-#include "bencode.h"
+#include "http_client.hpp"
+#include "bencode.hpp"
 
-#include "posix_time.h"
+#include "svlogger.hpp"
+#include "posix_time.hpp"
 
 #endif

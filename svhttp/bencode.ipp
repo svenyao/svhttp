@@ -1,4 +1,7 @@
-#include "bencode.h"
+#ifndef svhttp_bencode_ipp__
+#define svhttp_bencode_ipp__
+
+#include "bencode.hpp"
 #include <stdlib.h>
 
 namespace svhttp
@@ -220,3 +223,7 @@ namespace svhttp
 
 
 } //@ end namespace svhttp.
+
+
+
+#endif 

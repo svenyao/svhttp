@@ -1,9 +1,9 @@
-#ifndef _http_options_hpp_svhttp_
-#define _http_options_hpp_svhttp_
+#ifndef svhttp_http_options_hpp__
+#define svhttp_http_options_hpp__
 
+#include "curl/curl.h"
 #include <string>
 #include <vector>
-
 
 namespace svhttp
 {
@@ -47,7 +47,6 @@ namespace svhttp
 
 	typedef http_options request_header;
 	typedef http_options reponse_header;
-
 
 	class http_proxy
 	{

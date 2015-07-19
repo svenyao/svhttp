@@ -1,8 +1,8 @@
 #ifndef _svhttp_ip138_hpp_
 #define _svhttp_ip138_hpp_
 
-#include <string>
-#include <sstream>
+// #include <string>
+// #include <sstream>
 #include "svhttp.h"
 
 class ip138

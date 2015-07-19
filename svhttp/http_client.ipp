@@ -1,4 +1,7 @@
-#include "http_client.h"
+#ifndef svhttp_client_ipp__
+#define svhttp_client_ipp__
+
+#include "http_client.hpp"
 #include <iostream>
 #include <stdio.h>
 
@@ -14,15 +17,26 @@ namespace svhttp
 	/**
 	 *	http_global define & describe
 	 */
-	http_global* http_global::_sv_http = NULL;
-
-	http_global* http_global::get_instance()
+	class http_global
 	{
-		if(!_sv_http)
-		{
-			_sv_http = new http_global;
-		}
-		return _sv_http;
+	protected:
+		http_global(){ global_init(); };
+		~http_global(){ global_clean(); };	
+	public:
+		template<class tmpl>
+		friend tmpl& global_single();
+		SVHTTP_DECL std::string get_version();
+		
+	private:
+		SVHTTP_DECL bool global_init();
+		SVHTTP_DECL void global_clean();
+	};
+
+	template<class tmpl>
+	tmpl& global_single()
+	{
+		static tmpl tmpl_instance;
+		return tmpl_instance;
 	}
 
 	bool http_global::global_init()
@@ -81,8 +95,9 @@ namespace svhttp
 		,_timeout_connect(10)
 		,_timeout_read(30)
 	{
-		http_global::get_instance();
-		SVLOGGER_DBG << http_global::get_instance()->get_version();
+		global_single<http_global>();
+		SVLOGGER_DBG << global_single<http_global>().get_version();
+
 		_curl = curl_easy_init();
 		if (nullptr == _curl)
 		{
@@ -258,7 +273,7 @@ namespace svhttp
 
 	std::string http_client::get_version()
 	{
-		return http_global::get_instance()->get_version();
+		return global_single<http_global>().get_version();
 	}
 
 	bool http_client::set_post_fields( const std::string& post_str )
@@ -270,3 +285,5 @@ namespace svhttp
 
 }	//namespace svhttp
 
+
+#endif	// svhttp_client_ipp__
