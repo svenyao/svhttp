@@ -113,8 +113,13 @@ int main(int* argc, char** argv)
 
 -
 
-##### svhttp使用解决方案配置示例解析[以vs2012为例,其中目录路径需按实际解决方案修改,其他平台使用请参照之]
-
+##### svhttp使用解决方案配置示例解析
+	
+	[Linux 编译选项配置]
+	
+	安装支持库 libcurl, libiconv 
+	g++ -I(svhttp/) -lcurl -liconv
+	
 	[VS2012 解决方案配置]
 
 	<svhttp库配置>：
