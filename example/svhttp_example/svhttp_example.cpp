@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv)
 {
-	//SVLOGGER_INIT_PATH(".");
+	SVLOGGER_INIT_PATH(".");
 	SVLOGGER_DBG << ip138().get_reponse_str();
 
 	joker joker_;

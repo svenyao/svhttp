@@ -71,7 +71,7 @@ public:
 		return article_content_;
 	}
 
-	// 
+	// get interface.. sort.
 	std::string get_next_article_content()
 	{
 		if (!get_next_article())
