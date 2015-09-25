@@ -48,12 +48,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../;../../external/libcurl/include;../../svhttp;../../external/libiconvinclude/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../../external/libcurl/include;../../svhttp;../../external/libiconv/include;../../external/rapidjson;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4005;4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ip138.hpp" />
+    <ClInclude Include="..\joker.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

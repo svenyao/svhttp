@@ -33,6 +33,9 @@
     <ClInclude Include="..\ip138.hpp">
       <Filter>example</Filter>
     </ClInclude>
+    <ClInclude Include="..\joker.hpp">
+      <Filter>example</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
