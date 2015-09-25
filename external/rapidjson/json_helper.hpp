@@ -9,32 +9,32 @@
 #include <sstream>
 #include <fstream>
 
-namespace json
+namespace rapidjson
 {
-	/** json 使用范例
+	/** rapidjson 使用范例
 	 *  使用范例：
 		std::string json_str = "{\"data\":{\"oms\":{\"mid\":\"001\",\"code\":\"600446\",\"volume\":100,\"price\":10.01}},\"tgw\":{\"appid\":20}}";
 		std::cout << json_str << std::endl;
 		std::cout << "-------------------------------------" << std::endl;
 		rapidjson::Document doc;
-		json::JsonParse(doc, json_str);
+		rapidjson::JsonParse(doc, json_str);
 
-		if (json::CheckMember(doc, "data", json::MemberType::kObject) &&
-		json::CheckMember(doc["data"], "oms", json::MemberType::kObject))
+		if (rapidjson::CheckMember(doc, "data", rapidjson::MemberType::kObject) &&
+		rapidjson::CheckMember(doc["data"], "oms", rapidjson::MemberType::kObject))
 		{
-			std::cout << "object data: " << json::GetMemberValueString(doc["data"], "oms") << std::endl;
+			std::cout << "object data: " << rapidjson::GetMemberValueString(doc["data"], "oms") << std::endl;
 
 			rapidjson::Value& val = doc["data"]["oms"];
 
-			if (json::CheckMember(val, "code", json::MemberType::kString))
+			if (rapidjson::CheckMember(val, "code", rapidjson::MemberType::kString))
 			{
-				std::cout << "code: " << json::GetMemberValueString(val, "code") << std::endl;
+				std::cout << "code: " << rapidjson::GetMemberValueString(val, "code") << std::endl;
 			}
-			std::cout << "mid: "<< json::GetMemberValueString(val, "mid") << std::endl;
-			std::cout << "volume: " << json::GetMemberValueInt(val, "volume") << std::endl;
-			std::cout << "price: " << json::GetMemberValueDouble(val, "price") << std::endl;
+			std::cout << "mid: "<< rapidjson::GetMemberValueString(val, "mid") << std::endl;
+			std::cout << "volume: " << rapidjson::GetMemberValueInt(val, "volume") << std::endl;
+			std::cout << "price: " << rapidjson::GetMemberValueDouble(val, "price") << std::endl;
 
-			std::cout << "object tgw: " << json::GetMemberValueString(doc, "tgw") << std::endl;
+			std::cout << "object tgw: " << rapidjson::GetMemberValueString(doc, "tgw") << std::endl;
 		}
 	 */
 
@@ -222,14 +222,14 @@ namespace json
 	 */
 	inline int ParseFromFile(rapidjson::Document& doc, const std::string& file_path)
 	{
-		if (!json::ParseFromString(doc, ReadFile(file_path)))
+		if (!rapidjson::ParseFromString(doc, ReadFile(file_path)))
 		{
 			return -1;
 		}
 		return 0;
 	}
 
-}	// namespace json.
+}	// namespace rapidjson.
 
 
 #endif // JSON_HELPER_H__

@@ -154,11 +154,11 @@ private:
 			svtime::date_time::string_replace(temp_str, "'", "\"");
 			//SVLOGGER_DBG << temp_str;
 			rapidjson::Document doc;
-			if (json::ParseFromString(doc, temp_str))
+			if (rapidjson::ParseFromString(doc, temp_str))
 			{
-				title_ = json::GetMemberValueString(doc, "title");
-				desc_ = json::GetMemberValueString(doc, "desc");
-				url_ = json::GetMemberValueString(doc, "url");
+				title_ = rapidjson::GetMemberValueString(doc, "title");
+				desc_ = rapidjson::GetMemberValueString(doc, "desc");
+				url_ = rapidjson::GetMemberValueString(doc, "url");
 				//SVLOGGER_DBG << "title: " << title_;
 				//SVLOGGER_DBG << "desc: " << desc_;
 				//SVLOGGER_DBG << "url: " << url_;
