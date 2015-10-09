@@ -33,6 +33,9 @@ namespace svhttp
 
 	SVHTTP_DECL int base64_encode(const void *data, int size, char **str);
 	SVHTTP_DECL int base64_decode(const char *str, void *data);
+
+	// string replace all 
+	SVHTTP_DECL std::string& replace_all(std::string& str,const std::string& old_value, const std::string& new_value);
 } //@ end namespace svhttp.
 
 #ifndef SVHTTP_DISABLE_HEADER_ONLY

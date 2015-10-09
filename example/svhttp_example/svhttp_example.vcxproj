@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="..\ip138.hpp" />
     <ClInclude Include="..\joker.hpp" />
+    <ClInclude Include="..\joker_qiubai.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

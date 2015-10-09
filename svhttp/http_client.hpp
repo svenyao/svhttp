@@ -53,7 +53,7 @@ namespace svhttp
 		SVHTTP_DECL void read_to_file(const std::string &file_path)
 		{
 			std::fstream file_;
-			file_.open(file_path.c_str(), std::ios::binary | std::ios::in | std::ios::trunc);
+			file_.open(file_path.c_str(), std::ios::binary | std::ios::out | std::ios::trunc);
 			std::string content = std::string(_reponse_stream.begin(), _reponse_stream.end());
 			file_.write(content.c_str(), content.size());
 		}
