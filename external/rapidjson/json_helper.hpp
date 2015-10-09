@@ -179,21 +179,6 @@ namespace rapidjson
 	}
 
 	/**
-	 *	JsonParse / ParseFromString
-	 *	将json字符串解析为json对象
-	 */
-	inline bool ParseFromString(rapidjson::Document& doc, const std::string& json_str)
-	{
-		doc.SetObject();
-		doc.Parse<0>(json_str.c_str());
-		if (doc.HasParseError())
-		{
-			return false;
-		}
-		return true;
-	};
-
-	/**
 	 *	读取文件
 	 */
 	inline std::string ReadFile(const std::string& file_path)
@@ -207,16 +192,19 @@ namespace rapidjson
 		return (oss.str());
 	}
 	/**
-	 *	将rapidjson中的object对象解析为string字符串
+	 *	JsonParse / ParseFromString
+	 *	将json字符串解析为json对象
 	 */
-	template<class T>
-	inline std::string JsonToString(T& doc)
+	inline bool ParseFromString(rapidjson::Document& doc, const std::string& json_str)
 	{
-		rapidjson::StringBuffer buffer;
-		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-		doc.Accept(writer);
-		return buffer.GetString();
-	}
+		doc.SetObject();
+		doc.Parse<0>(json_str.c_str());
+		if (doc.HasParseError())
+		{
+			return false;
+		}
+		return true;
+	};
 	/**
 	 *	json文件对象解析
 	 */
@@ -227,6 +215,19 @@ namespace rapidjson
 			return -1;
 		}
 		return 0;
+	}
+
+
+	/**
+	 *	将rapidjson中的object对象解析为string字符串
+	 */
+	template<class T>
+	inline std::string ParseToString(T& doc)
+	{
+		rapidjson::StringBuffer buffer;
+		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+		doc.Accept(writer);
+		return buffer.GetString();
 	}
 
 }	// namespace rapidjson.
