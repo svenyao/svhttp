@@ -192,6 +192,22 @@ namespace rapidjson
 		return (oss.str());
 	}
 	/**
+	 *	写入文件
+	 */
+	bool WriteFile(const std::string& content, const std::string &file_path)
+	{
+		// 文件路径不允许为空
+		if (file_path.empty())
+		{
+			return false;
+		}
+		std::fstream file_;
+		file_.open(file_path.c_str(), std::ios::binary | std::ios::out | std::ios::trunc);
+		file_.write(content.c_str(), content.size());
+
+		return true;
+	}
+	/**
 	 *	JsonParse / ParseFromString
 	 *	将json字符串解析为json对象
 	 */
@@ -228,6 +244,18 @@ namespace rapidjson
 		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 		doc.Accept(writer);
 		return buffer.GetString();
+	}
+	/**
+	 *	将rapidjson中的object对象解析写入文件
+	 */
+	template<class T>
+	inline bool ParseToFile(T& doc, const std::string& file_path)
+	{
+		rapidjson::StringBuffer buffer;
+		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+		doc.Accept(writer);
+		
+		return WriteFile(buffer.GetString(), file_path);
 	}
 
 }	// namespace rapidjson.
