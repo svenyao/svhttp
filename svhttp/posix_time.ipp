@@ -479,6 +479,50 @@ int date_time::get_diff_date( date_time date1, date_time date2,const unsigned in
 	return nret;
 }
 
+int date_time::get_diff_time( date_time date1, date_time date2, const unsigned int& itype /*= 0*/ )
+{
+	time_t sec_diff = date2.get_time() - date1.get_time();
+	if (sec_diff != 0)
+	{
+		if ( date1.get_milli_seconds() < date2.get_milli_seconds() )
+		{
+			if (sec_diff > 0)
+			{
+				sec_diff++;
+			}
+			else
+			{
+				sec_diff--;
+			}
+		}
+	}
+	else
+	{
+		if ( date1.get_milli_seconds() < date2.get_milli_seconds() )
+		{
+			sec_diff++;
+		}
+		else if (date1.get_milli_seconds() > date2.get_milli_seconds())
+		{
+			sec_diff--;
+		}
+	}
+
+	switch (itype)
+	{
+	case 1:
+		return (int)sec_diff/60;
+		break;
+	case 2:
+		return (int)sec_diff/3600;
+		break;
+	default:
+		break;
+	}
+
+	return (int)sec_diff;
+}
+
 int date_time::compare_date(const date_time& date1, const date_time& date2 )
 {
 	int compare_ret = 0;
@@ -553,7 +597,7 @@ void date_time::parse_date_string(const std::string& sz_date_time, bool reformat
 	}
 
 	// 格式转换，防止日期分隔符传入的是/, 导致无法解析
-	string_replace(date_str, "/", "-");
+	replace_all(date_str, "/", "-");
 	
 	x_pos = date_str.find(" ");	// 查找空格，用于判断传入的参数类型
 	
@@ -699,7 +743,7 @@ void date_time::parse_date_string(const std::string& sz_date_time, bool reformat
 }
 
 // 字符替换
-std::string& date_time::string_replace(std::string& str,const std::string& old_value, const std::string& new_value)
+std::string& date_time::replace_all(std::string& str,const std::string& old_value, const std::string& new_value)
 {
 	for(std::string::size_type pos(0); pos != std::string::npos; pos += new_value.length() )
 	{

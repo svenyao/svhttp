@@ -159,16 +159,16 @@ namespace svlogger
 				str += ".";
 				svtime::date_time date;
 				std::string str_t = date.to_string(true);
-				date.string_replace(str_t, "-", "");
-				date.string_replace(str_t, " ", ".");
-				date.string_replace(str_t, ":", "");
+				date.replace_all(str_t, "-", "");
+				date.replace_all(str_t, " ", ".");
+				date.replace_all(str_t, ":", "");
 				str += str_t + ".log";
 				filename_ += "/" + str;
 
 				file_.open(filename_.c_str(), flag);
 			}
 
-			std::string start_string = "\n\n******** starting log ********\n\n\n";
+			std::string start_string = "\n\n********  starting log  ********\n\n\n";
 			write(start_string);
 		}
 

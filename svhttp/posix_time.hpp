@@ -1,8 +1,8 @@
-/**	Copyright (c) 2015-20XX jianyaoy. all rights reserved.
-*	datetime deal class.
-*	Author: jianyaoy@gmail.com
-*	$Date:  2015-02-10 23:00:00 +0800 $
-*/
+/**	Copyright (c) 2015-2038 jianyaoy. all rights reserved.
+ *	date&time deal class.
+ *	Author: jianyaoy@gmail.com
+ *	$Date:  2015-02-10 23:00:00 +0800 $
+ */
 #ifndef svtime_time_posix_hpp__
 #define svtime_time_posix_hpp__
 
@@ -80,6 +80,8 @@ public:
 	 */
 	// 计算比较两个日期相差的年/月/日 <type：{0: 日; 1: 月;  2: 年}>
 	SVTIMER_DECL static int get_diff_date(date_time date1, date_time date2, const unsigned int& itype = 0);
+	// 计算比较两个时间相差的时/分/秒 <type：{0: 秒; 1: 分;  2: 时}> (不足一秒按一秒递进)
+	SVTIMER_DECL static int get_diff_time(date_time date1, date_time date2, const unsigned int& itype = 0);
 	//  日期比较 (return 1:0:-1)
 	SVTIMER_DECL static int compare_date(const date_time& date1, const date_time& date2);
 
@@ -91,8 +93,8 @@ public:
 	SVTIMER_DECL static unsigned int get_day_of_year(const unsigned int& iyear, const unsigned int& imonth, const unsigned int& iday);
 	
 	// 字符替换函数
-	SVTIMER_DECL static std::string& string_replace(std::string& str, const std::string& old_value, const std::string& new_value);
-	
+	SVTIMER_DECL std::string& replace_all(std::string& str, const std::string& old_value, const std::string& new_value);
+
 	/**
 	 *	operator Override
 	 */
@@ -195,7 +197,6 @@ private:
 	// date_str format: [yyyy-mm-dd hh:mi:ss.ms] 
 	SVTIMER_DECL void parse_date_string(const std::string& date_str, bool reformat = false);
 	
-
 	unsigned int nyear;
 	unsigned int nmonth;
 	unsigned int nday;
@@ -211,7 +212,7 @@ private:
 
 };
 
-} // @end namespace svhttp
+} // @end namespace svtime
 
 #ifndef SVTIMER_DISABLE_HEADER_ONLY
 #	include "posix_time.ipp"

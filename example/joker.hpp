@@ -151,7 +151,7 @@ private:
 			//SVLOGGER_DBG << temp_str;
 
 			// ' -> "
-			svtime::date_time::string_replace(temp_str, "'", "\"");
+			svhttp::replace_all(temp_str, "'", "\"");
 			//SVLOGGER_DBG << temp_str;
 			rapidjson::Document doc;
 			if (rapidjson::ParseFromString(doc, temp_str))
@@ -234,11 +234,11 @@ private:
 					temp_str = article_content_.substr(x_pos, d_pos-x_pos+1);
 					//SVLOGGER_WARN << temp_str;
 
-					svtime::date_time::string_replace(article_content_, temp_str, "");
-					svtime::date_time::string_replace(article_content_, "</a>", "");
+					svhttp::replace_all(article_content_, temp_str, "");
+					svhttp::replace_all(article_content_, "</a>", "");
 					x_pos = article_content_.find("<a");
 				}
-				svtime::date_time::string_replace(article_content_, "<br/>", "");
+				svhttp::replace_all(article_content_, "<br/>", "");
 				//SVLOGGER_DBG << article_content_;
 			}
 		}
