@@ -46,7 +46,7 @@ public:
 
 	// 返回1970年1月1日至今的秒数。
 	SVTIMER_DECL time_t get_time();
-	// 重置当前datetime中的毫秒 <tip: 当前只有在windows有效>
+	// 重置当前datetime中的毫秒s
 	SVTIMER_DECL void reset_milliseconds();
 
 	// set operator
@@ -74,6 +74,8 @@ public:
 	SVTIMER_DECL unsigned int get_year_day();
 	// add idays (+/-)
 	SVTIMER_DECL void add_any_days(int idays);
+	// add iseconds (+/-)
+	SVTIMER_DECL void add_any_seconds(int iseconds);
 
 	/**
 	 *	static operation
@@ -193,9 +195,8 @@ private:
 
 	// date_time 全局格式化(date_time初始化)
 	SVTIMER_DECL void date_global_format();
-	// reformat: 是否重新做格式化处理
 	// date_str format: [yyyy-mm-dd hh:mi:ss.ms] 
-	SVTIMER_DECL void parse_date_string(const std::string& date_str, bool reformat = false);
+	SVTIMER_DECL void parse_date_string(const std::string& date_str);
 	
 	unsigned int nyear;
 	unsigned int nmonth;

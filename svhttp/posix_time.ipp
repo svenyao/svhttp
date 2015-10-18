@@ -1,5 +1,5 @@
-/**	Copyright (c) 2015-20XX jianyaoy. all rights reserved.
- *	datetime deal class. 
+/**	Copyright (c) 2015-2038 jianyaoy. all rights reserved.
+ *	date&time deal class. 
  *	Author: jianyaoy@gmail.com
  *	$Date:  2015-02-10 23:00:00 +0800 $
  */
@@ -10,7 +10,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#ifdef WIN32
+// c++11 regex
+#include <regex>
+
+#if defined(_WIN32)
 #	include <windows.h>
 #else
 #	include <sys/time.h>
@@ -41,7 +44,7 @@ date_time::date_time()
 	nminuter = tmp.tm_min;
 	nseconds = tmp.tm_sec;
 
-#ifdef _WIN32
+#if defined(_WIN32)
 	SYSTEMTIME wtm;
 	GetLocalTime(&wtm);
 	nmilliseconds = wtm.wMilliseconds;
@@ -58,11 +61,11 @@ date_time::date_time()
 
 date_time::date_time(std::string date_str)
 {
-	parse_date_string(date_str, true);
+	parse_date_string(date_str);
 }
 date_time::date_time(const char* szdate_str)
 {
-	parse_date_string(szdate_str, true);
+	parse_date_string(szdate_str);
 }
 date_time::date_time(time_t sec)
 {
@@ -221,10 +224,14 @@ time_t date_time::get_time()
 // 重置当前datetime中的毫秒
 void date_time::reset_milliseconds()
 {
-#if _WIN32
+#if defined(_WIN32)
 	SYSTEMTIME wtm;
 	GetLocalTime(&wtm);
 	nmilliseconds = wtm.wMilliseconds;
+#else
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	nmilliseconds = tv.tv_usec;
 #endif
 }
 
@@ -355,6 +362,70 @@ void date_time::add_any_days(int idays)
 		}
 	}
 }
+
+// add iseconds (+/-)
+void date_time::add_any_seconds( int iseconds )
+{
+	if (iseconds == 0)
+	{
+		return;
+	}
+	else if (iseconds < 0)
+	{
+		for (int i = 0; i < abs(iseconds); i++)
+		{
+			// tip: nseconds 为unsigned类型，所以当nseconds==0时，不能直接-1。nminuter&nhour 同理。
+			if (nseconds == 0)
+			{
+				if (nminuter == 0)
+				{
+					if (nhour == 0)
+					{
+						add_any_days(-1);
+						nhour = 23;
+					}
+					else
+					{
+						nhour--;
+					}
+					nminuter = 59;
+				}
+				else
+				{
+					nminuter--;
+				}
+				nseconds = 59;
+			}
+			else
+			{
+				nseconds--;
+			}
+		}
+	}
+	else if (iseconds > 0)
+	{
+		for (int i = 0; i < iseconds; i++)
+		{
+			nseconds++;
+			if (nseconds > 59 )
+			{
+				nminuter++;
+				if (nminuter > 59)
+				{
+					nhour++;
+					if (nhour > 23)
+					{
+						nhour = 0;
+						add_any_days(1);
+					}
+					nminuter = 0;
+				}
+				nseconds = 0;
+			}
+		}
+	}
+}
+
 
 // 蔡勒公式: 计算指定日期对应的星期几 since Sunday - [0,6]
 unsigned int date_time::get_day_of_week( const unsigned int& iyear, const unsigned int& imonth, const unsigned int& iday )
@@ -572,7 +643,7 @@ int date_time::compare_date(const date_time& date1, const date_time& date2 )
 // global formatting. 
 void date_time::date_global_format()
 {
-	nyear = 1900;
+	nyear = 1970;
 	nmonth = 1;
 	nday = 1;
 	
@@ -584,23 +655,20 @@ void date_time::date_global_format()
 	nisdst = 0;
 }
 // sz_date_time format: [yyyy-mm-dd hh:mi:ss.ms] 
-void date_time::parse_date_string(const std::string& sz_date_time, bool reformat/* = false*/)
+void date_time::parse_date_string(const std::string& sz_date_time)
 {
-	int x_pos, d_pos;
-	std::string sub_str;
+	// 重新格式化
+	date_global_format();
+
 	std::string date_str = sz_date_time;
-
-	// 是否重新格初始化
-	if (reformat)
-	{
-		date_global_format();
-	}
-
 	// 格式转换，防止日期分隔符传入的是/, 导致无法解析
 	replace_all(date_str, "/", "-");
-	
+
+	// c++11 日期时间格式的解析改为由正则表达式来处理
+#if 0
+	int x_pos, d_pos;
+	std::string sub_str;
 	x_pos = date_str.find(" ");	// 查找空格，用于判断传入的参数类型
-	
 	// 存在空格(传入的是完整日期时间格式字符串)
 	if (x_pos != -1)
 	{
@@ -720,15 +788,15 @@ void date_time::parse_date_string(const std::string& sz_date_time, bool reformat
 	{
 		nday = 1;
 	}
-	if (nhour > 24)
+	if (nhour > 23)
 	{
 		nhour = 0;
 	}
-	if (nminuter > 60)
+	if (nminuter > 59)
 	{
 		nminuter = 0;
 	}
-	if (nseconds > 60)
+	if (nseconds > 59)
 	{
 		nseconds = 0;
 	}
@@ -736,6 +804,33 @@ void date_time::parse_date_string(const std::string& sz_date_time, bool reformat
 	{
 		nmilliseconds = 0;
 	}
+#else
+	std::regex rgx_all("(([\\d]{4})-(0?[0-9]|10|12)-(0?[1-9]|[1-2][0-9]|3[0-1]))?[ ]?(([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])(:([0-5]?[0-9]))?(.([0-9]{3}))?)?");
+	std::smatch match_all;
+
+	if (std::regex_match(date_str, match_all, rgx_all))
+	{
+		nyear = atoi(std::string(match_all[2].first, match_all[2].second).c_str());
+		nmonth = atoi(std::string(match_all[3].first, match_all[3].second).c_str());
+		nday = atoi(std::string(match_all[4].first, match_all[4].second).c_str());
+
+		nhour = atoi(std::string(match_all[6].first, match_all[6].second).c_str());
+		nminuter = atoi(std::string(match_all[7].first, match_all[7].second).c_str());
+		nseconds = atoi(std::string(match_all[9].first, match_all[9].second).c_str());
+		nmilliseconds = atoi(std::string(match_all[11].first, match_all[11].second).c_str());
+	}
+
+	// 解析串只有时间部分时，需要对日期部分进行校正
+	nyear = (nyear==0)?1970:nyear;
+	nmonth = (nmonth==0)?1:nmonth;
+	nday = (nday==0)?1:nday;
+
+	// 正则表达式匹配的日并未按照不同月份进行特殊处理，此处进行校正。
+	if (nday > get_day_of_month(nyear,nmonth))
+	{
+		date_global_format();
+	}
+#endif
 
 	// 使用修正的数据计算星期x和当前天数(年)
 	nweekday = get_day_of_week(nyear, nmonth, nday);
