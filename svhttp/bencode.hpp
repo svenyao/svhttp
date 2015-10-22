@@ -23,7 +23,7 @@ namespace svhttp
 	 */
 	SVHTTP_DECL int convert_str(const std::string& sfrom, const std::string& sto, std::string& src_str);
 
-	SVHTTP_DECL int convert(const char *from, const char *to, char* save, int savelen, const char *src, int srclen);
+	SVHTTP_DECL int convert(const char *from, const char *to, char* save, int savelen, char *src, int srclen);
 #endif
 	/**
 	 *	base64 encode&decode

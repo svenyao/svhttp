@@ -16,21 +16,28 @@ namespace svhttp
 	{
 		int ilen = src_str.length();
 		int ioutlen = ilen * 3;
+		char *inbuf = (char*)malloc(ilen+1);
+		memset(inbuf, 0, ilen+1);
+		strncpy(inbuf, src_str.c_str(), ilen);
 		char *outbuf = (char *)malloc(ioutlen);
 		memset(outbuf, 0, ioutlen);
 
-		int nret = convert(sfrom.c_str(), sto.c_str(), outbuf, ioutlen, src_str.c_str(), ilen);
+		int nret = convert(sfrom.c_str(), sto.c_str(), outbuf, ioutlen, inbuf, ilen);
 		if (nret < 0)
 		{
+			free(inbuf);
+			inbuf = nullptr;
 			free(outbuf);
-			outbuf = NULL;
+			outbuf = nullptr;
 			return nret;
 		}
 
+		free(inbuf);
+		inbuf = nullptr;
 		outbuf[nret] = '\0';
 		src_str = outbuf;
 		free(outbuf);
-		outbuf = NULL;
+		outbuf = nullptr;
 
 		return nret;
 	}
@@ -44,20 +51,20 @@ namespace svhttp
 	 *	param src      原始需要转换的字符串
 	 *	param srclen   原始字符串长度
 	 */
-	int convert(const char *from, const char *to, char* save, int savelen, const char *src, int srclen)
+	int convert(const char *from, const char *to, char* save, int savelen, char *src, int srclen)
 	{
 		iconv_t cd;
-		const char   *inbuf = src;
+		char *inbuf = src;
 		char *outbuf = save;
 		size_t outbufsize = savelen;
 		int status = 0;
 		size_t  savesize = 0;
 		size_t inbufsize = srclen;
-		const char* inptr = inbuf;
-		size_t      insize = inbufsize;
+		char* inptr = inbuf;
+		size_t insize = inbufsize;
 		char* outptr = outbuf;
 		size_t outsize = outbufsize;
-    
+
 		cd = iconv_open(to, from);
 		iconv(cd, NULL, NULL, NULL, NULL);
 		if (inbufsize == 0) {
@@ -65,36 +72,44 @@ namespace svhttp
 			goto done;
 		}
 		while (insize > 0) {
+#if defined(_WIN32)
 			size_t res = iconv(cd, (const char**)&inptr, &insize, &outptr, &outsize);
+#else
+			size_t res = iconv(cd, &inptr, &insize, &outptr, &outsize);
+#endif
 			if (outptr != outbuf) {
 				int saved_errno = errno;
 				int outsize = outptr - outbuf;
-				strncpy(save+savesize, outbuf, outsize);
+				strncpy(save + savesize, outbuf, outsize);
 				errno = saved_errno;
 			}
 			if (res == (size_t)(-1)) {
 				if (errno == EILSEQ) {
 					int one = 1;
-					iconvctl(cd, ICONV_SET_DISCARD_ILSEQ,&one);
+					iconvctl(cd, ICONV_SET_DISCARD_ILSEQ, &one);
 					status = -3;
-				} else if (errno == EINVAL) {
+				}
+				else if (errno == EINVAL) {
 					if (inbufsize == 0) {
 						status = -4;
 						goto done;
-					} else {
+					}
+					else {
 						break;
 					}
-				} else if (errno == E2BIG) {
+				}
+				else if (errno == E2BIG) {
 					status = -5;
 					goto done;
-				} else {
+				}
+				else {
 					status = -6;
 					goto done;
 				}
 			}
 		}
 		status = strlen(save);
-	done:
+done:
 		iconv_close(cd);
 		return status;
 	}
