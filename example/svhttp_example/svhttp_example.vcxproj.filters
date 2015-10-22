@@ -39,6 +39,9 @@
     <ClInclude Include="..\joker_qiubai.hpp">
       <Filter>example</Filter>
     </ClInclude>
+    <ClInclude Include="..\sina_blog.hpp">
+      <Filter>example</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
