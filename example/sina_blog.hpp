@@ -11,6 +11,7 @@ struct article_info
 	std::string title;
 	std::string tm;
 	std::string data;
+	std::string ctx;
 };
 
 class sina_blog
@@ -19,10 +20,19 @@ public:
 	sina_blog() :atc_list_update(false)
 	{
 		atc_info_list_.clear();
+		client_.set_verbose();
+		//client_.set_option(CURLOPT_FOLLOWLOCATION, true);
+		client_.enable_accept_encoding(true);
 	};
 
 	void get_article_list()
 	{
+		svhttp::request_header opt;
+		opt.insert(std::string("User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1838.2 Safari/537.36"));
+		opt.insert(std::string("Accept-Encoding:gzip,deflate"));
+		opt.insert(std::string("Connection:keep-alive"));
+		opt.insert(std::string("Cache-Control:max-age=0"));
+		client_.set_headers(opt);
 		client_.open("http://blog.sina.com.cn/s/articlelist_1894465110_0_1.html");
 		//client_.read_to_file("blog.txt");
 
@@ -35,26 +45,16 @@ public:
 		svhttp::replace_all(reponse_str, "&gt;", ">");
 		svhttp::replace_all(reponse_str, "&nbsp;", " ");
 
-#if defined(_WIN32)
 		std::regex rgx_article_list("<!-- 列表 START -->(.*?)<!-- 列表END -->");
 		std::regex rgx_article_cell("<div .*?>(.*?)</div>");
-#else
-		std::regex rgx_article_cell("<div class=\"articleCell.*?>(.*?)</div>");
-#endif
 		std::regex rgx_atc_title("<a title=\"\" target=\"_blank\" href=\"(.*?)\">(.*?)</a>");
 		std::regex rgx_atc_tm("<span class=\"atc_tm SG_txtc\">(.*?)</span>");
 		std::regex rgx_atc_data("<span class=\"atc_data\" id=\"(.*?)\"></span>");
 
-#if defined(_WIN32)
 		std::smatch match_article_list;
 		if (std::regex_search(reponse_str, match_article_list, rgx_article_list))
-#endif
 		{
-#if defined(_WIN32)
 			std::string atc_list(match_article_list[1].first, match_article_list[1].second);
-#else
-			std::string atc_list(reponse_str);
-#endif
 
 			std::smatch match_article_cell;
 			std::string::const_iterator startpos = atc_list.begin();
@@ -117,7 +117,7 @@ public:
 
 	bool read_newest_article(int idx = 0)
 	{
-		if (!atc_list_update)
+		if (!atc_list_update && idx == 0)
 		{
 			return false;
 		}
@@ -127,6 +127,12 @@ public:
 		SVLOGGER_WARN << atc_info.title << " " /*<< atc_info.href << "\t"*/ ;
 		SVLOGGER_WARN << atc_info.tm ;  
 
+		svhttp::request_header opt;
+		opt.insert(std::string("Accept-Language:zh-CN,zh;q=0.8,en;q=0.6"));
+		opt.insert(std::string("Accept-Encoding:gzip,deflate,sdch"));
+		opt.insert(std::string("Connection:keep-alive"));
+		opt.insert(std::string("Cache-Control:max-age=0"));
+		client_.set_headers(opt);
 		client_.open(atc_info.href);
 		//client_.read_to_file("blog_atc.txt");
 
@@ -146,6 +152,7 @@ public:
 			newest_atc_ctx = std::regex_replace(reponse_str, rgx_atc_ctx_clean, "");
 			svhttp::replace_all(newest_atc_ctx, "&nbsp;", " ");
 			SVLOGGER_ERR << newest_atc_ctx;
+			atc_info_list_[idx].ctx = newest_atc_ctx;
 
 			return true;
 		}
@@ -157,6 +164,11 @@ public:
 		return newest_atc_ctx;
 	}
 	
+	article_info get_newest_article(int idx = 0)
+	{
+		return atc_info_list_[idx];
+	}
+
 private:
 	svhttp::http_client client_;
 
