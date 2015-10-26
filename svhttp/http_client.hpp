@@ -62,7 +62,7 @@ namespace svhttp
 		{ 
 			return std::string(_reponse_header_stream.begin(), _reponse_header_stream.end()); 
 		};
-		// 设置连接超时时间
+		// 设置连接超时时间(毫秒)
 		SVHTTP_DECL void set_timeout_connect(int val)
 		{
 			_timeout_connect = val;
@@ -71,7 +71,7 @@ namespace svhttp
 		{
 			return _timeout_connect;
 		};
-		// 设置读数据超时时间
+		// 设置读数据超时时间(毫秒)
 		SVHTTP_DECL void set_timeout_read(int val)
 		{
 			_timeout_read = val;
@@ -125,8 +125,8 @@ namespace svhttp
 		std::vector<char> _reponse_header_stream;
 		
 		char _error_buffer[CURL_ERROR_SIZE];
-		int _timeout_connect;
-		int _timeout_read;
+		int _timeout_connect;	// 连接超时时间(毫秒)
+		int _timeout_read;	// 读数据超时时间(毫秒)
 
 		bool _accept_encoding;
 	};

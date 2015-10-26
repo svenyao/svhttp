@@ -92,8 +92,8 @@ namespace svhttp
 	http_client::http_client()
 		:_headers(nullptr)
 		,_curl(nullptr)
-		,_timeout_connect(10)
-		,_timeout_read(30)
+		,_timeout_connect(10*1000)
+		,_timeout_read(30*1000)
 	{
 		global_single<http_global>();
 		SVLOGGER_DBG << global_single<http_global>().get_version();
@@ -153,11 +153,11 @@ namespace svhttp
 			return false;
 		}
 		// 添加超时时间设置选项
-		if (!set_option(CURLOPT_TIMEOUT, _timeout_read) )
+		if (!set_option(CURLOPT_TIMEOUT_MS, _timeout_read) )
 		{
 			return false;
 		}
-		if (!set_option(CURLOPT_CONNECTTIMEOUT, _timeout_connect))
+		if (!set_option(CURLOPT_CONNECTTIMEOUT_MS, _timeout_connect))
 		{
 			return false;
 		}

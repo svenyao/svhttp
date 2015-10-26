@@ -20,6 +20,8 @@ public:
 	sina_blog() :atc_list_update(false)
 	{
 		atc_info_list_.clear();
+		client_.set_timeout_connect(4000);
+		client_.set_timeout_read(8000);
 		client_.set_verbose();
 		//client_.set_option(CURLOPT_FOLLOWLOCATION, true);
 		client_.enable_accept_encoding(true);
