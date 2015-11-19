@@ -28,14 +28,21 @@ namespace svhttp
 	/**
 	 *	base64 encode&decode
 	 */
+#if 0
 	SVHTTP_DECL std::string base64_encode(const std::string& toEncode);
 	SVHTTP_DECL std::string base64_decode(const std::string& toDecode);
 
 	SVHTTP_DECL int base64_encode(const void *data, int size, char **str);
 	SVHTTP_DECL int base64_decode(const char *str, void *data);
+#else
+	SVHTTP_DECL std::string base64_encode(const std::string& toEncode);
+	SVHTTP_DECL std::string base64_decode(const std::string& toDecode);
+#endif
 
 	// string replace all 
 	SVHTTP_DECL std::string& replace_all(std::string& str,const std::string& old_value, const std::string& new_value);
+
+
 } //@ end namespace svhttp.
 
 #ifndef SVHTTP_DISABLE_HEADER_ONLY

@@ -116,6 +116,7 @@ done:
 
 #endif
 
+#if 0
 	/**
 	 * Encodiert einen std::string base64
 	 */
@@ -235,7 +236,107 @@ done:
 		}
 		return q - (unsigned char *) data;
 	}
+#else
 
+	static const char base64EncodeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	static const int base64DecodeChars[] = {
+		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
+		52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
+		-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+		15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
+		-1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+		41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
+
+	SVHTTP_DECL std::string base64_encode( const std::string& toEncode )
+	{
+		std::string out;
+		unsigned int i, len;
+		unsigned int c1, c2, c3;
+
+		len = toEncode.length();
+		i = 0;
+		out = "";
+		while (i < len) {
+			c1 = toEncode[i++] & 0xff;
+			if (i == len)
+			{
+				out += base64EncodeChars[(c1 >> 2)];
+				out += base64EncodeChars[((c1 & 0x3) << 4)];
+				out += "==";
+				break;
+			}
+			c2 = toEncode[(i++)];
+			if (i == len)
+			{
+				out += base64EncodeChars[(c1 >> 2)];
+				out += base64EncodeChars[((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4)];
+				out += base64EncodeChars[((c2 & 0xF) << 2)];
+				out += "=";
+				break;
+			}
+			c3 = toEncode[(i++)];
+			out += base64EncodeChars[(c1 >> 2)];
+			out += base64EncodeChars[(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4))];
+			out += base64EncodeChars[(((c2 & 0xF) << 2) | ((c3 & 0xC0) >> 6))];
+			out += base64EncodeChars[(c3 & 0x3F)];
+		}
+		return out;
+	}
+
+	SVHTTP_DECL std::string base64_decode(const std::string& toDecode)
+	{
+		unsigned int c1, c2, c3, c4;
+		unsigned int i, len;
+		std::string out;
+
+		len = toDecode.length();
+		i = 0;
+		out = "";
+		while (i < len) {
+			/* c1 */
+			do {
+				c1 = base64DecodeChars[toDecode[(i++)] & 0xff];
+			} while (i < len && c1 == -1);
+			if (c1 == -1)
+				break;
+
+			/* c2 */
+			do {
+				c2 = base64DecodeChars[toDecode[(i++)] & 0xff];
+			} while (i < len && c2 == -1);
+			if (c2 == -1)
+				break;
+
+			out += (char)((c1 << 2) | ((c2 & 0x30) >> 4));
+
+			/* c3 */
+			do {
+				c3 = toDecode[(i++)] & 0xff;
+				if (c3 == 61)
+					return out;
+				c3 = base64DecodeChars[c3];
+			} while (i < len && c3 == -1);
+			if (c3 == -1)
+				break;
+
+			out += (char)(((c2 & 0XF) << 4) | ((c3 & 0x3C) >> 2));
+
+			/* c4 */
+			do {
+				c4 = toDecode[(i++)] & 0xff;
+				if (c4 == 61)
+					return out;
+				c4 = base64DecodeChars[c4];
+			} while (i < len && c4 == -1);
+			if (c4 == -1)
+				break;
+			out += (char)(((c3 & 0x03) << 6) | c4);
+		}
+		return out;
+	}
+#endif
 
 	// 字符替换
 	std::string& replace_all(std::string& str,const std::string& old_value, const std::string& new_value)
