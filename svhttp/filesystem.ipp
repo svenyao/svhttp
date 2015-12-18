@@ -7,17 +7,13 @@
 #if defined(_WIN32)
 #	include <windows.h>
 #	include <ShlObj.h>
-#endif
-
-#if defined(_WIN32) 
-#	include <direct.h>  
-#	include <io.h>  
-#else  
-#	include <stdarg.h>  
+#	include <direct.h>
+#	include <io.h>
+#else 
+#	include <stdlib.h>
 #	include <sys/stat.h>
 #	include <unistd.h>
-#	include <stdlib.h>
-#endif 
+#endif
 
 #if defined(_WIN32)
 #	define ACCESS _access
