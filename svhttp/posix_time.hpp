@@ -213,6 +213,9 @@ private:
 
 };
 
+// sleep
+SVTIMER_DECL void sleep(int msecs);
+
 } // @end namespace svtime
 
 #ifndef SVTIMER_DISABLE_HEADER_ONLY

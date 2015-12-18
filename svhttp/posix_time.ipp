@@ -850,6 +850,18 @@ std::string& date_time::replace_all(std::string& str,const std::string& old_valu
 	return str;
 }
 
+void sleep(int msecs)
+{
+#if (defined (WIN32))
+	Sleep(msecs);
+#else
+	struct timespec t;
+	t.tv_sec = msecs / 1000;
+	t.tv_nsec = (msecs % 1000) * 1000000;
+	nanosleep(&t, NULL);
+#endif
+}
+
 } // @end namespace svhttp
 
 #endif

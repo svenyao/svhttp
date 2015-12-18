@@ -6,5 +6,6 @@
 
 #include "svlogger.hpp"
 #include "posix_time.hpp"
+#include "filesystem.hpp"
 
 #endif

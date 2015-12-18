@@ -4,6 +4,10 @@
 #include "bencode.hpp"
 #include <stdlib.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 namespace svhttp
 {
 #ifdef ENABLE_LIBICONV
@@ -114,6 +118,72 @@ done:
 		return status;
 	}
 
+#endif
+
+#ifdef _WIN32
+	/**	
+	 *	ANSI  <-->  UNICODE  <-->  UTF8
+	 */
+	std::wstring ansi_to_unicode(const std::string& sz_ansi)
+	{
+		int wcslen = ::MultiByteToWideChar(CP_ACP, NULL, sz_ansi.c_str(), sz_ansi.length(), NULL, 0);
+		//分配空间要给'\0'留个空间，MultiByteToWideChar不会给'\0'空间
+		wchar_t* sz_unicode = new wchar_t[wcslen + 1];
+		//转换
+		::MultiByteToWideChar(CP_ACP, NULL, sz_ansi.c_str(), sz_ansi.length(), sz_unicode, wcslen);
+		//最后加上 '\0'
+		sz_unicode[wcslen] = '\0';
+		std::wstring unicode_str = sz_unicode;
+		delete[] sz_unicode;
+		return unicode_str;
+	}
+	std::string	unicode_to_ansi(const std::wstring& sz_unicode)
+	{
+		//预转换，得到所需空间的大小
+		int ansilen = ::WideCharToMultiByte(CP_ACP, NULL, sz_unicode.c_str(), sz_unicode.length(), NULL, 0, NULL, NULL);
+		//分配空间要给'\0'留个空间
+		char* sz_ansi = new char[ansilen + 1];
+		//转换
+		//unicode版对应的strlen是wcslen
+		::WideCharToMultiByte(CP_ACP, NULL, sz_unicode.c_str(), sz_unicode.length(), sz_ansi, ansilen, NULL, NULL);
+		//最后加上'\0'
+		sz_ansi[ansilen] = '\0';
+
+		std::string ansi_str = sz_ansi;
+		delete[] sz_ansi;
+		return ansi_str;
+	}
+	std::wstring utf8_to_unicode(const std::string& sz_utf)
+	{
+		//预转换，得到所需空间的大小
+		int wcslen = ::MultiByteToWideChar(CP_UTF8, NULL, sz_utf.c_str(), sz_utf.length(), NULL, 0);
+		//分配空间要给'\0'留个空间，MultiByteToWideChar不会给'\0'空间
+		wchar_t* sz_unicode = new wchar_t[wcslen + 1];
+		//转换
+		::MultiByteToWideChar(CP_UTF8, NULL, sz_utf.c_str(), sz_utf.length(), sz_unicode, wcslen);
+		//最后加上'\0'
+		sz_unicode[wcslen] = '\0';
+
+		std::wstring unicode_str = sz_unicode;
+		delete[] sz_unicode;
+		return unicode_str;
+	}
+	std::string	unicode_to_utf8(const std::wstring& sz_unicode)
+	{
+		//预转换，得到所需空间的大小，这次用的函数和上面名字相反
+		int u8len = ::WideCharToMultiByte(CP_UTF8, NULL, sz_unicode.c_str(), sz_unicode.length(), NULL, 0, NULL, NULL);
+		//UTF8虽然是Unicode的压缩形式，但也是多字节字符串，所以可以以char的形式保存
+		char* sz_utf8 = new char[u8len + 1];
+		//转换
+		//unicode版对应的strlen是wcslen
+		::WideCharToMultiByte(CP_UTF8, NULL, sz_unicode.c_str(), sz_unicode.length(), sz_utf8, u8len, NULL, NULL);
+		//最后加上'\0'
+		sz_utf8[u8len] = '\0';
+
+		std::string utf8_str = sz_utf8;
+		delete[] sz_utf8;
+		return utf8_str;
+	}
 #endif
 
 #if 0
@@ -349,6 +419,24 @@ done:
 				break;
 		}
 		return str;
+	}
+	// string split
+	std::vector<std::string> split(const std::string& input, const std::string& delim)
+	{
+		std::vector<std::string> ret;
+		size_t last = 0;
+		size_t index = input.find_first_of(delim, last);
+		while (index != std::string::npos)
+		{
+			ret.push_back(input.substr(last, index - last));
+			last = index + delim.size();
+			index = input.find_first_of(delim, last);
+		}
+		if (index - last > 0)
+		{
+			ret.push_back(input.substr(last, index - last));
+		}
+		return ret;
 	}
 
 } //@ end namespace svhttp.

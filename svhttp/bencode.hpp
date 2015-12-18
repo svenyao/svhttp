@@ -12,6 +12,7 @@
 #endif
 
 #include <string>
+#include <vector>
 
 namespace svhttp
 {
@@ -24,6 +25,16 @@ namespace svhttp
 	SVHTTP_DECL int convert_str(const std::string& sfrom, const std::string& sto, std::string& src_str);
 
 	SVHTTP_DECL int convert(const char *from, const char *to, char* save, int savelen, char *src, int srclen);
+#endif
+
+#ifdef _WIN32
+	/**	
+	 *	ANSI  <-->  UNICODE  <-->  UTF8
+	 */
+	std::wstring ansi_to_unicode(const std::string& sz_ansi);		//ansi to unicode
+	std::string	unicode_to_ansi(const std::wstring& sz_unicode);	// unicode to ansi
+	std::wstring utf8_to_unicode(const std::string& sz_utf);		// utf8 to unicode
+	std::string	unicode_to_utf8(const std::wstring& sz_unicode);	//unicode to utf8
 #endif
 	/**
 	 *	base64 encode&decode
@@ -39,9 +50,11 @@ namespace svhttp
 	SVHTTP_DECL std::string base64_decode(const std::string& toDecode);
 #endif
 
+	// 扩展字符串处理方法
 	// string replace all 
 	SVHTTP_DECL std::string& replace_all(std::string& str,const std::string& old_value, const std::string& new_value);
-
+	// string split.
+	SVHTTP_DECL std::vector<std::string> split(const std::string& input, const std::string& delim);
 
 } //@ end namespace svhttp.
 
