@@ -22,7 +22,7 @@ namespace svhttp
 			options.clear(); 
 		}
 
-		void insert(std::string &str_option)
+		void insert(const std::string &str_option)
 		{
 			options.push_back(str_option);
 		}

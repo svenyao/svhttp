@@ -14,7 +14,8 @@
 #	include <io.h>  
 #else  
 #	include <stdarg.h>  
-#	include <sys/stat.h>  
+#	include <sys/stat.h>
+#	include <unistd.h>
 #	include <stdlib.h>
 #endif 
 
@@ -116,7 +117,7 @@ namespace svhttp
 #if defined(_WIN32)
 			return _rmdir(direct_path.c_str());
 #else
-			return _rmdir(direct_path.c_str());
+			return rmdir(direct_path.c_str());
 #endif
 		}
 		// remove file
