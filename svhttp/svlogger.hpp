@@ -310,32 +310,6 @@ namespace svlogger
 		}
 	};
 
-
-	SVLOGGER_DECL static void _log(const char *format, va_list args)
-	{
-		char buf[MAX_LOG_LENGTH];
-		vsnprintf(buf, MAX_LOG_LENGTH - 3, format, args);
-		strcat(buf, "\n");
-
-#if defined(_WIN32)
-		WCHAR wszBuf[MAX_LOG_LENGTH] = { 0 };
-		MultiByteToWideChar(CP_UTF8, 0, buf, -1, wszBuf, sizeof(wszBuf));
-		OutputDebugStringW(wszBuf);
-		WideCharToMultiByte(CP_ACP, 0, wszBuf, -1, buf, sizeof(buf), nullptr, FALSE);
-#else
-		// Linux, Mac, iOS, etc
-		// 
-#endif
-	}
-
-	SVLOGGER_DECL void svCLog(const char * format, ...)
-	{
-		va_list args;
-		va_start(args, format);
-		_log(format, args);
-		va_end(args);
-	}
-
 }	//namespace svlogger
 
 // 设置日志最低打印输出等级
