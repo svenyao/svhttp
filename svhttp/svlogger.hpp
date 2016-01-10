@@ -24,15 +24,17 @@
 #include <mutex>
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #	include <Windows.h>	 // for win32 Console api.
-#endif // WIN32
+#endif // _WIN32
 
 #define DEBUG	0
 #define INFO	1
 #define WARNING	2
 #define ERROR	3
 #define FILE	4
+
+static const int MAX_LOG_LENGTH = 16 * 1024;
 
 /**
  *	svlogger 使用简介
@@ -225,6 +227,18 @@ namespace svlogger
 #endif
 		std::cout.flush();
 	}
+	// debug 日志输出<针对 visual studio>
+	SVLOGGER_DECL void output_debug_trace(const std::string& message)
+	{
+#if defined(_WIN32)
+		int wlen = MultiByteToWideChar(CP_ACP, 0, message.c_str(), message.size(), 0, 0);
+		wchar_t *lpwsz = new wchar_t[wlen + 1];
+		MultiByteToWideChar(CP_ACP, 0, message.c_str(), message.size(), lpwsz, wlen);
+		lpwsz[wlen] = '\0';
+		OutputDebugStringW(lpwsz);
+		delete[] lpwsz;
+#endif
+	}
 
 	SVLOGGER_DECL void logger_writer(unsigned int level, std::string& message, bool disable_cout /*= false*/)
 	{
@@ -251,6 +265,8 @@ namespace svlogger
 			}
 		}
 #endif
+		// trace debug output. add by 2016-01-08 17:00
+		output_debug_trace(whole);
 	}
 
 	class logger :public noncopyable
@@ -293,6 +309,33 @@ namespace svlogger
 			return *this;
 		}
 	};
+
+
+	SVLOGGER_DECL static void _log(const char *format, va_list args)
+	{
+		char buf[MAX_LOG_LENGTH];
+		vsnprintf(buf, MAX_LOG_LENGTH - 3, format, args);
+		strcat(buf, "\n");
+
+#if defined(_WIN32)
+		WCHAR wszBuf[MAX_LOG_LENGTH] = { 0 };
+		MultiByteToWideChar(CP_UTF8, 0, buf, -1, wszBuf, sizeof(wszBuf));
+		OutputDebugStringW(wszBuf);
+		WideCharToMultiByte(CP_ACP, 0, wszBuf, -1, buf, sizeof(buf), nullptr, FALSE);
+#else
+		// Linux, Mac, iOS, etc
+		// 
+#endif
+	}
+
+	SVLOGGER_DECL void svCLog(const char * format, ...)
+	{
+		va_list args;
+		va_start(args, format);
+		_log(format, args);
+		va_end(args);
+	}
+
 }	//namespace svlogger
 
 // 设置日志最低打印输出等级

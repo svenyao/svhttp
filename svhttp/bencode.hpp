@@ -54,7 +54,13 @@ namespace svhttp
 	// string replace all 
 	SVHTTP_DECL std::string& replace_all(std::string& str,const std::string& old_value, const std::string& new_value);
 	// string split.
+	SVHTTP_DECL std::vector<std::string> &split(const std::string &s, const std::string& delim, std::vector<std::string> &elems);
 	SVHTTP_DECL std::vector<std::string> split(const std::string& input, const std::string& delim);
+	
+	// ltrim, rtrim, trim
+	SVHTTP_DECL std::string &ltrim(std::string &s);
+	SVHTTP_DECL std::string &rtrim(std::string &s);
+	SVHTTP_DECL std::string &trim(std::string &s);
 
 } //@ end namespace svhttp.
 

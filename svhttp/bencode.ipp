@@ -2,7 +2,11 @@
 #define svhttp_bencode_ipp__
 
 #include "bencode.hpp"
+
 #include <stdlib.h>
+#include <cctype>
+#include <functional>
+#include <fcntl.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -421,22 +425,44 @@ done:
 		return str;
 	}
 	// string split
-	std::vector<std::string> split(const std::string& input, const std::string& delim)
+	std::vector<std::string> &split(const std::string &input, const std::string& delim, std::vector<std::string> &elems)
 	{
-		std::vector<std::string> ret;
+		elems.clear();
 		size_t last = 0;
 		size_t index = input.find_first_of(delim, last);
 		while (index != std::string::npos)
 		{
-			ret.push_back(input.substr(last, index - last));
+			elems.push_back(input.substr(last, index - last));
 			last = index + delim.size();
 			index = input.find_first_of(delim, last);
 		}
 		if (index - last > 0)
 		{
-			ret.push_back(input.substr(last, index - last));
+			elems.push_back(input.substr(last, index - last));
 		}
-		return ret;
+		return elems;
+	}
+	std::vector<std::string> split(const std::string& input, const std::string& delim)
+	{
+		std::vector<std::string> elems;
+		split(input, delim, elems);
+		return elems;
+	}
+
+	// ltrim, rtrim, trim
+	std::string &ltrim(std::string &s)
+	{
+		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+		return s;
+	}
+	std::string &rtrim(std::string &s)
+	{
+		s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+		return s;
+	}
+	std::string &trim(std::string &s)
+	{
+		return ltrim(rtrim(s));
 	}
 
 } //@ end namespace svhttp.
