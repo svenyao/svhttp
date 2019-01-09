@@ -1,90 +1,82 @@
-======
 
 svhttp是一个基于libcurl实现的HTTP (c++)库.
 
--
+### 简易上手
 
-##### 简易上手
-
-``` c++
+```cpp
 #include <iostream>
 #include "svhttp.h"
 
 int main(int* argc, char** argv)
 {
-	svhttp::http_client _client;
-	_client.open("http://1111.ip138.com/ic.asp");
+	svhttp::http_client clt;
+	clt.open("http://1111.ip138.com/ic.asp");
 	
-	std::cout << _client.read_some();
+	std::cout << clt.read_some();
 	
 	return 0;
 }
 ```
--
 
-##### 使用request_header定制HTTP请求
+### 使用request_header定制HTTP请求
 
-``` c++
+```cpp
 #include <iostream>
 #include "svhttp.h"
 
 int main(int* argc, char** argv)
 {
-	svhttp::http_client _client;
+	svhttp::http_client clt;
 	
 	svhttp::request_header opts;
 	opts.insert(std::string("Accept: application/javascript, */*;q=0.8"));
 	opts.insert(std::string("Connection: Keep-Alive"));
-	_client.set_headers(opts);
+	clt.set_headers(opts);
 	
-	_client.open("http://1111.ip138.com/ic.asp");
+	clt.open("http://1111.ip138.com/ic.asp");
 	
-	std::cout << _client.read_some();
+	std::cout << clt.read_some();
 	
 	return 0;
 }
 ``` 
 
--
+### post数据提交
 
-##### post数据提交
-
-``` c++
+```cpp
 #include <iostream>
 #include "svhttp.h"
 
 int main(int* argc, char** argv)
 {
-	svhttp::http_client _client;
+	svhttp::http_client clt;
 	
 	std::string post_str = "post string.";
-	_client.set_post_fields(post_str);
+	clt.set_post_fields(post_str);
 	
-	_client.open("http://1111.ip138.com/ic.asp");
+	clt.open("http://1111.ip138.com/ic.asp");
 	
-	std::cout << _client.read_some();
+	std::cout << clt.read_some();
 	
 	return 0;
 }
 ```
 
--
+### 设置代理
 
-##### 设置代理
-
-``` c++
+```cpp
 #include <iostream>
 #include "svhttp.h"
 
 int main(int* argc, char** argv)
 {
-	svhttp::http_client _client;
+	svhttp::http_client clt;
 	// 设置代理
-	_client.set_proxy(std::string("127.0.0.1:808"));
+	clt.set_proxy(std::string("127.0.0.1:808"));
 	
-	_client.open("http://1111.ip138.com/ic.asp");
+	clt.open("http://1111.ip138.com/ic.asp");
 	
-	std::cout << _client.read_some();
+	std::cout << clt.read_some();
 	
 	return 0;
 }
@@ -92,9 +84,7 @@ int main(int* argc, char** argv)
 
 更多代理设置项请参照svhttp源码。
 
--
-
-##### 克隆代码
+### 克隆代码
 
 使用 git 获取 svhttp 项目源代码:
 
@@ -111,9 +101,7 @@ int main(int* argc, char** argv)
     $ cd svhttp
     $ git pull -f
 
--
-
-##### svhttp使用解决方案配置示例解析
+### svhttp使用解决方案配置示例解析
 	
 	[Linux 编译选项配置]
 	
@@ -148,8 +136,6 @@ int main(int* argc, char** argv)
 	#include "svhttp.h"
 
 	或者在项目属性的预处理宏中添加 ENABLE_LIBICONV;
-	
--
 
 更多svhttp使用方法，请参照svhttp源码。
 
